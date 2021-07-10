@@ -1,0 +1,39 @@
+{
+    "ENV": "development",
+    "HOST": "localhost",
+    "SERVER": {
+        "PORT": 7000
+    },
+    "TEST": {
+        "HOST": "http://localhost",
+        "PORT": 7001
+    },
+    "DB": {
+        "MSSQL": {
+            "HOST": "INFOSISTEMAS116\\SQLEXPRESS",
+            "PORT": 1433,
+            "USER": "sa",
+            "PASSWORD": "a123",
+            "DATABASE": "testeDb",
+            "CONNECTION_TIMEOUT": 20000,
+            "REQUEST_TIMEOUT": 30000,
+            "POOL": {
+                "MAX": 5,
+                "MIN": 1
+            },
+            "OPTIONS": {
+                "ENCRYPT": false
+            }
+        }
+    },
+    "API_CONFIG":{
+        "API_MARVEL": {
+            "BASE_URL": "",
+            "API_KEY": ""
+        }
+    },
+    "AUTH": {
+        "LOGIN": "login",
+        "PASSWORD": "password"
+      }
+}

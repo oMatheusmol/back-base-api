@@ -1,0 +1,266 @@
+openapi: 3.0.3
+info:
+  title: API NodeJS
+  description: API Description
+  version: 1.0.0
+  termsOfService: http://localhost
+
+  license:
+    name: "MIT"
+    url: http://localhost
+servers:
+  - url: http://localhost:{port}/{basePath}
+    description: Development Server
+    variables:
+      port:
+        enum:
+          - "7000"
+        default: "7000"
+      basePath:
+        default: api/v1
+  - url: http://localhost:{port}/{basePath}
+    description: Production Server
+    variables:
+      port:
+        enum:
+          - "7000"
+        default: "7000"
+      basePath:
+        default: api/v1
+tags:
+  - name: Auth
+    description: "Token de acesso"
+
+paths:
+  # Auth #
+  /auth/access-token:
+    post:
+      tags:
+        - Auth
+      summary: Obtem um token de acesso
+      operationId: accessToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                LOGIN:
+                  type: string
+                PASSWORD:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: UNAUTHORIZED
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+        500:
+          description: INTERNAL_SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+
+  # Routes #
+
+  /product:
+    post:
+      security:
+        - BearerAuth: []
+      tags:
+        - Product
+      summary: Armazenar dados da consulta Product
+      operationId: post Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productName:
+                  type: string
+                price:
+                  type: number
+                amount:
+                  type: number
+
+      responses:
+        201:
+          description: POST Product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/product"
+        401:
+          description: UNAUTHORIZED
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+        500:
+          description: INTERNAL_SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+    put:
+      security:
+        - BearerAuth: []
+      tags:
+        - Product
+      summary: Altera dados da consulta Product
+      operationId: put Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productName:
+                  type: string
+                id:
+                  type: number
+
+      responses:
+        201:
+          description: put Product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/product-put"
+        401:
+          description: UNAUTHORIZED
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+        500:
+          description: INTERNAL_SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+    delete:
+      security:
+        - BearerAuth: []
+      tags:
+        - Product
+      summary: Deleta dados da consulta Product
+      operationId: delete Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: number
+
+      responses:
+        201:
+          description: deleta Product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/product-deleta"
+        401:
+          description: UNAUTHORIZED
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+        500:
+          description: INTERNAL_SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"            
+  
+  #getproduct route#
+  /product/{productName}:
+    get:
+      tags:
+        - Product
+      summary: Recupera dados do produto pelo productName
+      operationId: getProduct
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: productName
+          required: true
+          schema:
+            type: string  
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/apiResponse" 
+        500:
+          description: INTERNAL_SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse" 
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  schemas:
+    errorResponse:
+      type: object
+      properties:
+        data:
+          type: integer
+          properties:
+            code:
+              type: integer
+            message:
+              type: string
+            error:
+              type: string
+    apiResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    product:
+      type: object
+      properties:
+        productName:
+          type: string
+        price:
+          type: integer
+        amount:
+          type: integer
+    product-put:
+      type: object
+      properties:
+        productName:
+          type: string
+        id:
+          type: integer
+    product-deleta:
+      type: object
+      properties:
+        id:
+          type: integer
