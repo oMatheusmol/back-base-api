@@ -3,6 +3,10 @@ const mssql = require('mssql');
 const _defaultConfig = require('../config/dbConfigMssql');
 
 /**
+ * @author Matheus Mol
+*/
+
+/**
  * Pool de conexão com o banco de dados SQL Server
  */
 module.exports = class MssqlFactory {

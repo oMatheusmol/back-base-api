@@ -2,6 +2,10 @@ const BaseController = require('./base.controller');
 const ProductRepository = require('../domain/repositories/product.repository');
 const repository = new ProductRepository();
 
+/**
+ * @author Matheus Mol
+*/
+
 class ProductController extends BaseController {
   constructor() {
     super();
@@ -12,9 +16,8 @@ class ProductController extends BaseController {
       const posted = await repository.post(req.body);
       
       if(posted === 'Error' || null) return res.status(401).send({"message": "Falha no cadastro"});
-      
-      const data = {"message": "Salvo com sucesso" };
-      super.post(res, data);
+       
+      super.post(res, {"message": "Salvo com sucesso" });
 
     } catch (err) {
       super.sendError(res, err);
@@ -36,9 +39,9 @@ class ProductController extends BaseController {
 
    async put(req, res) {
     try {
-      const puted = await repository.put(req.body);
+      const putted = await repository.put(req.body);
           
-      if(puted === 'Error' || null) return res.status(401).send({"message": "Falha na alteracao"});
+      if(putted === 'Error' || null) return res.status(401).send({"message": "Falha na alteracao"});
       
       super.post(res, {"message": "Alterado com sucesso" });
 

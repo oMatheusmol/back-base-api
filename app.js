@@ -1,5 +1,9 @@
 'use strict'
 
+/**
+ * @author Matheus Mol
+*/
+
 const config = require('config');
 const app = require('./src/app/middlewares/middlewares');
 const logger = require('./src/infrastructure/logger/logger');

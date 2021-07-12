@@ -3,25 +3,8 @@ const jwt = require('jsonwebtoken');
 const authConfig = require('../../infrastructure/config/auth.json')
 
 /**
- * Bearer token
- */
-
-// module.exports.verifyBearer = (req, res, next) => {
-//     const authHeader = req.headers.authorization
-//     if (!authHeader) return req.res.status(401).send({ error: 'Not token provided' })
-  
-//     const parts = authHeader.split(' ')
-//     if (!parts.length === 2) return req.res.status(401).send({ error: 'Token error' })
-  
-//     const [schema, token] = parts
-//     if (!/^Bearer$/i.test(schema)) return req.res.status(401).send({ error: 'Token badformatted' })
-//     // JWT verification
-//     jwt.verify(token, authConfig.secret, (error, decoded) => {
-//       if (error) return req.res.status(401).send({ error: 'Invalid token' })
-//       req.user = decoded
-//       return next()
-//     })
-//   }
+ * @author Matheus Mol
+*/
 
   module.exports.verifyApiKey = async (req, scopes, schema) => {
 

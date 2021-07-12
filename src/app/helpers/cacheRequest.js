@@ -1,6 +1,11 @@
 /**
+ * @author Matheus Mol
+*/
+
+/**
  * Objeto para salvar requisição em memória (cache)
  */
+
 
 module.exports = class CacheRequest {
 

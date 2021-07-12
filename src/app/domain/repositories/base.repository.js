@@ -9,6 +9,10 @@ const Exception = require('../../exceptions/exception');
 const array_util = require('../../utils/arrayUtil');
 
 /**
+ * @author Matheus Mol
+*/
+
+/**
  * Camada de acesso a banco de dados
  */
 module.exports = class BaseRepository {

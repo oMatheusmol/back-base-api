@@ -8,6 +8,10 @@ const cache = require('memory-cache');
 let memCache = new cache.Cache();
 
 /**
+ * @author Matheus Mol
+*/
+
+/**
  * Request service HTTP route
  */
 module.exports = class BaseController {

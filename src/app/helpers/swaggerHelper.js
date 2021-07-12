@@ -2,6 +2,10 @@ const { BadRequestException } = require("../exceptions");
 const ObjectUtils = require("../utils/objectUtil");
 
 /**
+ * @author Matheus Mol
+*/
+
+/**
  * Validação secundária parametros do swagger
  */
 module.exports = {

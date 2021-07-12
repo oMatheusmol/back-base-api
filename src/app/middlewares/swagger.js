@@ -4,8 +4,11 @@ const openApiValidator = require('express-openapi-validator');
 const jsyaml = require('js-yaml');
 const swaggerUI = require('swagger-ui-express');
 const swaggerErrorValidator = require('./swaggerErrorValidators');
-
 const authSecurity = require('./auth');
+
+/**
+ * @author Matheus Mol
+*/
 
 module.exports = (app) => {
 

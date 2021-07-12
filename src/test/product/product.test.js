@@ -75,7 +75,7 @@ describe('GET Product', () => {
       const res = await common.chai.request(common.server)
           .get(`/api/v1/product/${value.productName}`)
 
-      const status =HttpStatusCode.UNAUTHORIZED;
+      const status = HttpStatusCode.UNAUTHORIZED;
       res.should.have.status(status);
   });
 
@@ -92,7 +92,7 @@ describe('GET Product', () => {
         .post({'Authorization': token})
         .get(`/api/v1/product/caneca`)
         
-    const status =HttpStatusCode.CREATED;
+    const status = HttpStatusCode.CREATED;
     res.should.have.status(status);
   });
 

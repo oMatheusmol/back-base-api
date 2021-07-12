@@ -5,6 +5,10 @@ const cors = require('cors')
 const morganBody = require('morgan-body');
 const logger = require('../../infrastructure/logger/logger');
 
+/**
+ * @author Matheus Mol
+*/
+
 morganBody(app, {
     stream: logger.stream,
     maxBodyLength: 250,

@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * @author Matheus Mol
+*/
+
 module.exports = {
     Exception: require('./exception'),
     ForbiddenException: require('./forbiddenException'),

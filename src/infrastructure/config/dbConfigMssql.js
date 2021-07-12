@@ -1,6 +1,11 @@
 const config = require('config');
 const os = require('os');
 const localHost = os.hostname();
+
+/**
+ * @author Matheus Mol
+*/
+
 /**
  * Configuração de conexão do banco de dados SQL Server
 */

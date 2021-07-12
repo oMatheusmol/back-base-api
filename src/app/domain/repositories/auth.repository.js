@@ -3,6 +3,10 @@ const BaseRepository = require('./base.repository');
 const JwtUtil = require('../../utils/jwtUtil');
 const exceptions = require('../../exceptions/index');
 
+/**
+ * @author Matheus Mol
+*/
+
 module.exports = class AuthRepository extends BaseRepository {
     constructor() {
         super();

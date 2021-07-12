@@ -2,6 +2,10 @@ const router = require('express').Router();
 const controller = require('../controllers/product.controller');
 const auth = require('../middlewares/auth')
 
+/**
+ * @author Matheus Mol
+*/
+
 router.post ("/", controller.post);
 
 router.get("/:productName", controller.get);

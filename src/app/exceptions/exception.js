@@ -2,6 +2,10 @@
 const HttpStatusCode = require('../helpers/httpStatusCode');
 const ObjectUtils = require('../utils/objectUtil');
 
+/**
+ * @author Matheus Mol
+*/
+
 module.exports = class Exception extends Error {
     constructor(err, status) {
         super(err || "INTERNAL_SERVER_ERROR");

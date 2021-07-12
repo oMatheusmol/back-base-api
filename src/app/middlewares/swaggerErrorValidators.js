@@ -3,6 +3,10 @@ const HttpStatusCode = require('../helpers/httpStatusCode');
 const ObjectUtils = require('../utils/objectUtil');
 
 /**
+ * @author Matheus Mol
+*/
+
+/**
  * Validação de parametros do swagger
  */
 module.exports = (err, req, res, next) => {

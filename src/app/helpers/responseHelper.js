@@ -4,6 +4,10 @@ const Exception = require('../exceptions/exception');
 const log = require('../../infrastructure/logger/logger');
 const HttpStatusCode = require('./httpStatusCode');
 
+/**
+ * @author Matheus Mol
+*/
+
 
 /**
  * Padrão de resposta da API

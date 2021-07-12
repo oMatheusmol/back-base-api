@@ -6,6 +6,11 @@ const config = require('config');
 const JwtUtil = require('../utils/jwtUtil');
 const jwt = require('jsonwebtoken');
 const repository = new AuthRepository();
+
+/**
+ * @author Matheus Mol
+*/
+
 class AuthController extends BaseController {
     constructor() {
         super(repository);

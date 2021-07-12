@@ -1,6 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
+/**
+ * @author Matheus Mol
+*/
+
 module.exports = app => {
     fs
         .readdirSync(__dirname)

@@ -4,6 +4,10 @@ const https = require('https');
 const Exception = require('../exceptions/exception');
 const _ = require('lodash');
 
+/**
+ * @author Matheus Mol
+*/
+
 module.exports = class BaseApiService {
 
     constructor(baseURL) {

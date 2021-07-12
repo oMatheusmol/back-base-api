@@ -15,7 +15,6 @@ module.exports = class ProductRepository extends BaseRepository {
     super();
   }
 
-
   async post (body) { 
     try {
       
@@ -87,8 +86,5 @@ module.exports = class ProductRepository extends BaseRepository {
       this.handleError(err);
     }
   }
-
-  
-
 
 }

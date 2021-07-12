@@ -5,6 +5,10 @@ const http = require('http');
 const fs = require('fs');
 const config = require('config');
 
+/**
+ * @author Matheus Mol
+*/
+
 module.exports = (app, useHttps = false) => {
     if (useHttps) {
         const privateKey = fs.readFileSync('config/cert.key', 'utf8');
