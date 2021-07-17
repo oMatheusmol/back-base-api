@@ -26,6 +26,6 @@ async function start(conn) {
     server.listen(port, () => {
         logger.info(`API running on Port ${port} | Enviroment: ${enviroment} | Database: ${db}`);
     });
-    module.exports = { server };
+    module.exports = server;
 
 }

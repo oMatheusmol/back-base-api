@@ -1,8 +1,3 @@
-const chai = require('chai');
-const assert = chai.assert;
-const chaiHttp = require('chai-http');
-chai.use(chaiHttp);
-const should = chai.should();
 const common = require('../index');
 const HttpStatusCode = require('../../app/helpers/httpStatusCode');
 
@@ -12,40 +7,40 @@ const HttpStatusCode = require('../../app/helpers/httpStatusCode');
 
 describe('POST Product', () => {
 
-  it('WITHOUT TOKEN (UNAUTHORIZED)', async ()=> {
-      //test
-      const value = {
+    it('WITHOUT TOKEN POST', async ()=> {
+        //test
+        const value = {
         "productName": "P6",
         "price": 12,
         "amount": 100
-      }
+        }
     
-      const res = await common.chai.request(common.server)
-          .post(`/api/v1/product`)
-          .send(value);
+        const res = await common.chai.request(common.server)
+            .post(`/api/v1/product`)
+            .send(value);
 
-      const status =HttpStatusCode.UNAUTHORIZED;
-      res.should.have.status(status);
-  });
+        const status =HttpStatusCode.UNAUTHORIZED;
+        res.should.have.status(status);
+    });
 
-  it('WITH TOKEN (CREATED)', async ()=> {
+    it('WITH TOKEN POST', async ()=> {
 
     const payload = {
-      "LOGIN": "login",
-      "PASSWORD": "password"
+        "LOGIN": "login",
+        "PASSWORD": "password"
     };
     let token = await common.chai.request(common.server)
-          .post(`/api/v1/auth/access-token`)
-          .send(payload);
+            .post(`/api/v1/auth/access-token`)
+            .send(payload);
     token = `Bearer ${token.body.data}`;
 
     //test
     const value = {
-      "productName": "banana",
-      "price": 12,
-      "amount": 100
+        "productName": "banana",
+        "price": 12,
+        "amount": 100
     }
-  
+
     const res = await common.chai.request(common.server)
         .post(`/api/v1/product`)
         .set({'Authorization': token})
@@ -53,33 +48,30 @@ describe('POST Product', () => {
 
     const status =HttpStatusCode.CREATED;
     res.should.have.status(status);
-  });
+    });
 
 });
 
-
-describe('GET Product', () => {
+describe('DELETE Product', () => {
   const value = {
-    "productName": "caneca",
-    "price": 12,
-    "amount": 100
+    "id": 6
   }
   const payload = {
     "LOGIN": "login",
     "PASSWORD": "password"
   };
 
-  it('WITHOUT TOKEN (UNAUTHORIZED)', async ()=> {
+  it('WITHOUT TOKEN DELETE', async ()=> {
       //test
 
       const res = await common.chai.request(common.server)
-          .get(`/api/v1/product/${value.productName}`)
+          .get(`/api/v1/product`)
 
-      const status = HttpStatusCode.UNAUTHORIZED;
+      const status = HttpStatusCode. METHOD_NOT_ALLOWED;
       res.should.have.status(status);
   });
 
-  it('WITH TOKEN (CREATED)', async ()=> {
+  it('WITH TOKEN DELETE', async ()=> {
 
     let token = await common.chai.request(common.server)
           .post(`/api/v1/auth/access-token`)
@@ -88,12 +80,88 @@ describe('GET Product', () => {
 
     //test
 
-    const res = await common.chai.request( )
-        .post({'Authorization': token})
-        .get(`/api/v1/product/caneca`)
+    const res = await common.chai.request(common.server)
+        .del(`/api/v1/product`)
+        .set({'Authorization': token})
+        .send(value)
         
     const status = HttpStatusCode.CREATED;
     res.should.have.status(status);
   });
 
 });
+
+describe('GET Product', () => {
+  
+  it('WITHOUT TOKEN GET', async ()=> {
+      //test
+      const value = "caneca";
+      const res = await common.chai.request(common.server)
+          .get(`/api/v1/product/${value}`)
+
+      const status = HttpStatusCode. UNAUTHORIZED;
+      res.should.have.status(status);
+  });
+
+  it('WITH TOKEN GET', async ()=> {
+    const payload = {
+      "LOGIN": "login",
+      "PASSWORD": "password"
+    };
+    const value = "caneca";
+    let token = await common.chai.request(common.server)
+          .post(`/api/v1/auth/access-token`)
+          .send(payload);
+    token = `Bearer ${token.body.data}`;
+
+    //test
+
+    const res = await common.chai.request(common.server)
+        .get(`/api/v1/product/caneca}`)
+        .set({'Authorization': token})
+        
+    const status = HttpStatusCode.CREATED;
+    res.should.have.status(status);
+  });
+});
+
+describe('PUT Product', () => {
+    const value = {
+      "productName": "peixe",
+      "id": 12,
+    }
+    const payload = {
+      "LOGIN": "login",
+      "PASSWORD": "password"
+    };
+  
+    it('WITHOUT TOKEN PUT', async ()=> {
+        //test
+  
+        const res = await common.chai.request(common.server)
+            .get(`/api/v1/product`)
+  
+        const status = HttpStatusCode. METHOD_NOT_ALLOWED;
+        res.should.have.status(status);
+    });
+  
+    it('WITH TOKEN PUT', async ()=> {
+  
+      let token = await common.chai.request(common.server)
+            .post(`/api/v1/auth/access-token`)
+            .send(payload);
+      token = `Bearer ${token.body.data}`;
+  
+      //test
+  
+      const res = await common.chai.request(common.server)
+          .put(`/api/v1/product`)
+          .set({'Authorization': token})
+          .send(value)
+          
+      const status = HttpStatusCode.CREATED;
+      res.should.have.status(status);
+    });
+
+});
+

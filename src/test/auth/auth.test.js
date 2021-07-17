@@ -7,7 +7,7 @@ const HttpStatusCode = require('../../app/helpers/httpStatusCode');
 
 describe('POST Auth', () => {
 
-    it('OK', async ()=> {
+    it('Auth with status OK', async ()=> {
         //test
         const payload = {
             "LOGIN": "login",

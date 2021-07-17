@@ -4,6 +4,7 @@ const mssql = require('mssql');
 const BaseRepository = require('./base.repository');
 const _ = require('lodash');
 const { find } = require('lodash');
+const arrayUtil = require('../../utils/arrayUtil')
 
 /**
  * @author Matheus Mol
@@ -27,7 +28,7 @@ module.exports = class ProductRepository extends BaseRepository {
         .query(sqlText); 
         const verify = result.recordset[0].CodigoProduct;
         
-        if(verify === undefined) return null;
+        if(arrayUtil.isEmpty(verify)) return null;
 
         return verify;        
 
@@ -74,6 +75,7 @@ module.exports = class ProductRepository extends BaseRepository {
   async delete(body) {
 
     try {
+      
       const sqlText = this.getSqlText('../sqls/product-delete.sql');
       const conn = await this.openConnection();
       const result = await conn.request()
