@@ -21,14 +21,19 @@ class AuthController extends BaseController {
      */
     async accessToken(req, res) {
         try {
-            const {LOGIN: loginBody, PASSWORD: passwordBody} = req.body;
-            const login = await config.get('AUTH').LOGIN;
-            const password = await config.get('AUTH').PASSWORD;
-            if(login === loginBody && password === passwordBody){
-                const token =await JwtUtil.sign({ login });
-                return super.sendSuccess(res, token);
-            }
-            res.status(400).send('error');
+            const token = await repository.accessToken(req.body);
+ 
+            res.send(token);
+
+            // const {LOGIN: loginBody, PASSWORD: passwordBody} = req.body;
+            // const login = await config.get('AUTH').LOGIN;
+            // const password = await config.get('AUTH').PASSWORD;
+            // if(login === loginBody && password === passwordBody){
+            //     const token =await JwtUtil.sign({ login });
+            //     return super.sendSuccess(res, token);
+            // }
+            // res.status(400).send('error');
+
         } catch (err) {
             super.sendError(res, err);
         }

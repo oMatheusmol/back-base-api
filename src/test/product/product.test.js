@@ -32,11 +32,11 @@ describe('POST Product', () => {
     let token = await common.chai.request(common.server)
             .post(`/api/v1/auth/access-token`)
             .send(payload);
-    token = `Bearer ${token.body.data}`;
+    token = `Bearer ${token.body.token}`;
 
     //test
     const value = {
-        "productName": "banana",
+        "productName": "jaja",
         "price": 12,
         "amount": 100
     }
@@ -76,7 +76,7 @@ describe('DELETE Product', () => {
     let token = await common.chai.request(common.server)
           .post(`/api/v1/auth/access-token`)
           .send(payload);
-    token = `Bearer ${token.body.data}`;
+    token = `Bearer ${token.body.token}`;
 
     //test
 
@@ -112,7 +112,7 @@ describe('GET Product', () => {
     let token = await common.chai.request(common.server)
           .post(`/api/v1/auth/access-token`)
           .send(payload);
-    token = `Bearer ${token.body.data}`;
+    token = `Bearer ${token.body.token}`;
 
     //test
 
@@ -150,7 +150,7 @@ describe('PUT Product', () => {
       let token = await common.chai.request(common.server)
             .post(`/api/v1/auth/access-token`)
             .send(payload);
-      token = `Bearer ${token.body.data}`;
+      token = `Bearer ${token.body.token}`;
   
       //test
   

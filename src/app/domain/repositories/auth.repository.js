@@ -16,11 +16,11 @@ module.exports = class AuthRepository extends BaseRepository {
 
         try {
             const conn = await this.openConnection();
-            const sqlText = this.getSqlText('../sqls/infoGestao-get.sql');
+            const sqlText = this.getSqlText('../sqls/autenticacao_usuario_get.sql');
 
             const result = await conn.request()
-                .input('Email', mssql.VarChar(120), params.username)
-                .input('Senha', mssql.VarChar(32), params.password)
+                .input('Email', mssql.VarChar(120), params.LOGIN)
+                .input('Senha', mssql.VarChar(32), params.PASSWORD)
                 .query(sqlText);
 
             if (this.isResultEmpty(result)) {
