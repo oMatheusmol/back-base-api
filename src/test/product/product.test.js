@@ -19,33 +19,33 @@ describe('POST Product', () => {
     "PASSWORD": "password"
   };
 
-    it('WITHOUT TOKEN POST', async ()=> {
-        //test 
-        const res = await common.chai.request(common.server)
-            .post(`/api/v1/product`)
-            .send(value);
+  it('WITHOUT TOKEN POST', async ()=> {
+      //test 
+      const res = await common.chai.request(common.server)
+          .post(`/api/v1/product`)
+          .send(value);
 
-        const status =HttpStatusCode.UNAUTHORIZED;
-        res.should.have.status(status);
-    });
+      const status =HttpStatusCode.UNAUTHORIZED;
+      res.should.have.status(status);
+  });
 
-    it('WITH TOKEN POST', async ()=> {
+  it('WITH TOKEN POST', async ()=> {
 
-    let token = await common.chai.request(common.server)
-            .post(`/api/v1/auth/access-token`)
-            .send(payload);
-    token = `Bearer ${token.body.token}`;
+  let token = await common.chai.request(common.server)
+          .post(`/api/v1/auth/access-token`)
+          .send(payload);
+  token = `Bearer ${token.body.token}`;
 
-    //test
+  //test
 
-    const res = await common.chai.request(common.server)
-        .post(`/api/v1/product`)
-        .set({'Authorization': token})
-        .send(value);
+  const res = await common.chai.request(common.server)
+      .post(`/api/v1/product`)
+      .set({'Authorization': token})
+      .send(value);
 
-    const status =HttpStatusCode.CREATED;
-    res.should.have.status(status);
-    });
+  const status =HttpStatusCode.CREATED;
+  res.should.have.status(status);
+  });
 
 });
 

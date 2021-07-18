@@ -25,6 +25,9 @@ class AuthController extends BaseController {
  
             res.send(token);
 
+            /* 
+                Development setup 
+            */
             // const {LOGIN: loginBody, PASSWORD: passwordBody} = req.body;
             // const login = await config.get('AUTH').LOGIN;
             // const password = await config.get('AUTH').PASSWORD;
