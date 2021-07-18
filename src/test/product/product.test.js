@@ -1,20 +1,26 @@
 const common = require('../index');
 const HttpStatusCode = require('../../app/helpers/httpStatusCode');
-
+const faker = require('faker')
+faker.locale = 'pt_BR'
 /**
  * @author Matheus Mol
 */
 
 describe('POST Product', () => {
+  const value = {
+    "productName": faker.commerce.productName(),
+    "price": faker.datatype.float() ,
+    "amount": faker.datatype.number()
+  }
+  console.log(value)
+
+  const payload = {
+    "LOGIN": "login",
+    "PASSWORD": "password"
+  };
 
     it('WITHOUT TOKEN POST', async ()=> {
-        //test
-        const value = {
-        "productName": "P6",
-        "price": 12,
-        "amount": 100
-        }
-    
+        //test 
         const res = await common.chai.request(common.server)
             .post(`/api/v1/product`)
             .send(value);
@@ -25,21 +31,12 @@ describe('POST Product', () => {
 
     it('WITH TOKEN POST', async ()=> {
 
-    const payload = {
-        "LOGIN": "login",
-        "PASSWORD": "password"
-    };
     let token = await common.chai.request(common.server)
             .post(`/api/v1/auth/access-token`)
             .send(payload);
     token = `Bearer ${token.body.token}`;
 
     //test
-    const value = {
-        "productName": "jaja",
-        "price": 12,
-        "amount": 100
-    }
 
     const res = await common.chai.request(common.server)
         .post(`/api/v1/product`)
@@ -92,10 +89,14 @@ describe('DELETE Product', () => {
 });
 
 describe('GET Product', () => {
+  const payload = {
+    "LOGIN": "login",
+    "PASSWORD": "password"
+  };
+  const value = faker.commerce.productName();
   
   it('WITHOUT TOKEN GET', async ()=> {
       //test
-      const value = "caneca";
       const res = await common.chai.request(common.server)
           .get(`/api/v1/product/${value}`)
 
@@ -104,11 +105,7 @@ describe('GET Product', () => {
   });
 
   it('WITH TOKEN GET', async ()=> {
-    const payload = {
-      "LOGIN": "login",
-      "PASSWORD": "password"
-    };
-    const value = "caneca";
+
     let token = await common.chai.request(common.server)
           .post(`/api/v1/auth/access-token`)
           .send(payload);
@@ -117,7 +114,7 @@ describe('GET Product', () => {
     //test
 
     const res = await common.chai.request(common.server)
-        .get(`/api/v1/product/caneca}`)
+        .get(`/api/v1/product/${value}}`)
         .set({'Authorization': token})
         
     const status = HttpStatusCode.CREATED;

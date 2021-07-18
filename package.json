@@ -8,8 +8,9 @@
     "build": "npm i & pm2 delete ecosystem.config.yml & pm2 start ecosystem.config.yml",
     "restart": "pm2 delete ecosystem.config.yml & pm2 start ecosystem.config.yml",
     "start": "node --tls-min-v1.0 app.js",
-    "test": "nyc --reporter=text mocha --reporter spec ./src/test/**/*.js ",
-    "rootTest": "mocha --timeout 50000 --reporter spec"
+    "test": "nyc --reporter=lcov --reporter=text-summary mocha --reporter spec ./src/test/**/*.test.js ",
+    "rootTest": "mocha --timeout 50000 --reporter spec",
+    "coverage": "nyc --reporter=html npm run test"
   },
   "repository": {
     "type": "git",
@@ -48,6 +49,7 @@
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
     "chalk": "^4.1.0",
+    "faker": "^5.5.3",
     "mocha": "^8.3.2",
     "nodemon": "^2.0.7",
     "nyc": "^15.1.0"
