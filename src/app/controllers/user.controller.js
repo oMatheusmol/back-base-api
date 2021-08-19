@@ -1,19 +1,32 @@
 const BaseController = require('./base.controller');
-const ProductRepository = require('../domain/repositories/product.repository');
-const repository = new ProductRepository();
+const UserRepository = require('../domain/repositories/user.repository');
+const repository = new UserRepository();
 
 /**
  * @author Matheus Mol
 */
 
-class ProductController extends BaseController {
+class UserController extends BaseController {
   constructor() {
     super();
   }
 
-  async post(req, res) {
+  async postModelUser(req, res) {
     try {
-      const posted = await repository.post(req.body);
+      const posted = await repository.postModelUser(req.body);
+      
+      if(!posted) return res.status(401).send({"message": "Falha no cadastro"});
+       
+      super.post(res, {"message": "Salvo com sucesso" });
+
+    } catch (err) {
+      super.sendError(res, err);
+    }
+   }
+
+  async postNormalUser(req, res) {
+    try {
+      const posted = await repository.postNormalUser(req.body);
       
       if(!posted) return res.status(401).send({"message": "Falha no cadastro"});
        
@@ -65,4 +78,4 @@ class ProductController extends BaseController {
   
 }
 
-module.exports = new ProductController();
+module.exports = new UserController();
