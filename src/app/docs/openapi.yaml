@@ -45,9 +45,9 @@ paths:
             schema:
               type: object
               properties:
-                LOGIN:
+                email:
                   type: string
-                PASSWORD:
+                password:
                   type: string
         required: true
       responses:
@@ -74,12 +74,12 @@ paths:
 
   /product:
     post:
-      security:
-        - BearerAuth: []
       tags:
         - Product
       summary: Armazenar dados da consulta Product
       operationId: post Product
+      security:
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:

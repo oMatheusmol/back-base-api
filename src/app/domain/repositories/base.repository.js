@@ -4,7 +4,6 @@ const mssql = require('mssql');
 const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
-const Factory = require('../../../infrastructure/database/mssqlFactory');
 const Exception = require('../../exceptions/exception');
 const array_util = require('../../utils/arrayUtil');
 
@@ -17,24 +16,8 @@ const array_util = require('../../utils/arrayUtil');
  */
 module.exports = class BaseRepository {
 
-    constructor(config, debug = false) {
-        this._factory = new Factory(config);
+    constructor(debug = false) {
         this.debug = debug;
-    }
-
-    /**
-    * Cria um pool de conexão
-    */
-    async openConnection() {
-        return await this._factory.connectPool();
-    }
-
-    /**
-     * Cria um pool de conexão
-     * @param {{mssql.config}} config banco de dados ou conexão 
-     */
-    async openConnectionConfig(config) {
-        return await this._factory.connectPoolConfig(config);
     }
 
     /**
@@ -52,35 +35,6 @@ module.exports = class BaseRepository {
             rows: this.toParamValue(params.rows)
         }
         return pagination;
-    }
-
-    /**
-    * Leitura de arquivos .sql directory sql
-    * ```
-    * '../sqls/file.sql';
-    * ```
-    * or Use 
-    * ```
-    * '../sqls/prefix/file.sql';
-    * ```
-     * @param {string} pathSql 
-     * @param {string} prefix 
-     */
-    getSqlText(pathSql, prefix) {
-        try {
-
-            const path_sql = prefix !== undefined ? `${prefix}//${pathSql}` : pathSql;
-            const sqlText = fs.readFileSync(path.join(__dirname, path_sql),
-                { encoding: 'utf8' }
-            );
-            if(this.debug){
-                console.log(sqlText);
-            }
-            return sqlText;
-
-        } catch (err) {
-            throw new Exception(`base_repository.getSqlText => Erro na leitura do sql ${pathSql}`);
-        }
     }
 
     /**

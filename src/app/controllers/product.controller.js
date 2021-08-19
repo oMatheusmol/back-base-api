@@ -15,7 +15,7 @@ class ProductController extends BaseController {
     try {
       const posted = await repository.post(req.body);
       
-      if(posted === 'Error' || null) return res.status(401).send({"message": "Falha no cadastro"});
+      if(!posted) return res.status(401).send({"message": "Falha no cadastro"});
        
       super.post(res, {"message": "Salvo com sucesso" });
 

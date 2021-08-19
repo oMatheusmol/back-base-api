@@ -4,36 +4,27 @@ const mssql = require('mssql');
 const BaseRepository = require('./base.repository');
 const _ = require('lodash');
 const { find } = require('lodash');
-const arrayUtil = require('../../utils/arrayUtil')
+const arrayUtil = require('../../utils/arrayUtil');
+const database = require('../../../infrastructure/database/mongoFactory');
 
 /**
  * @author Matheus Mol
 */
 
-module.exports = class ProductRepository extends BaseRepository {
+module.exports = class ProductRepository {
 
   constructor() {
-    super();
   }
-
+  
   async post (body) { 
     try {
-      
-      const sqlText = this.getSqlText('../sqls/insert.product.sql');
-      const conn = await this.openConnection();
-      const result = await conn.request()
-        .input('productName', mssql.VarChar, body.productName)
-        .input('price', mssql.Money, body.price)
-        .input('amount', mssql.Int, body.amount)
-        .query(sqlText); 
-        const verify = result.recordset[0].CodigoProduct;
-        
-        if(arrayUtil.isEmpty(verify)) return null;
-
-        return verify;        
-
+      const collectionName = 'products';
+      const product = body;
+      await database.getCollection(collectionName).insertOne(product);
+      return true;
+            
     } catch (error){
-      return error.message;
+      return false;
     }
   } 
   

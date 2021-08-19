@@ -28,7 +28,7 @@ module.exports = (app) => {
             validateResponses: false,
             validateSecurity: {
                 handlers: {
-                    BearerAuth : authSecurity.verifyBearer
+                    ApiKeyAuth: authSecurity.verifyApiKey
                 }
             }
         })

@@ -2,12 +2,13 @@ const mssql = require('mssql');
 const BaseRepository = require('./base.repository');
 const JwtUtil = require('../../utils/jwtUtil');
 const exceptions = require('../../exceptions/index');
+const database = require('../../../infrastructure/database/mongoFactory')
 
 /**
  * @author Matheus Mol
 */
 
-module.exports = class AuthRepository extends BaseRepository {
+module.exports = class AuthRepository extends BaseRepository{
     constructor() {
         super();
     }
@@ -15,19 +16,14 @@ module.exports = class AuthRepository extends BaseRepository {
     async accessToken(params) {
 
         try {
-            const conn = await this.openConnection();
-            const sqlText = this.getSqlText('../sqls/autenticacao_usuario_get.sql');
+            const collectionName = 'accessUser';
+            const user = params;
+            await database.getCollection(collectionName).insertOne(user);
 
-            const result = await conn.request()
-                .input('Email', mssql.VarChar(120), params.LOGIN)
-                .input('Senha', mssql.VarChar(32), params.PASSWORD)
-                .query(sqlText);
-
-            if (this.isResultEmpty(result)) {
-                throw new exceptions.AutheticationException('Usuário ou senha inválido(s)');
+            if (this.isResultEmpty([user])) {
+                throw new exceptions.AutheticationException('Email ou Senha inválido(s)');
             }
-            const user = this.toFirst(result);
-            //generate token
+
             const token = await this._generateTokenJWT(user);
             return token;
         } catch (error) {
@@ -42,8 +38,8 @@ module.exports = class AuthRepository extends BaseRepository {
 
         //dados do token
         const encode = {
-            id: user.CodigoUsuario,
-            username: user.NomeUsuario,
+            email: user.email,
+            password: user.password,
         };
 
         //generate token
@@ -51,8 +47,8 @@ module.exports = class AuthRepository extends BaseRepository {
         const decoded = JwtUtil.decode(token);
         return {
             "token": token,
-            "issuedAt": new Date(new Date(0)).setUTCSeconds(decoded.iat),
-            "expiresAt": new Date(new Date(0)).setUTCSeconds(decoded.exp)
+            "issuedAt": decoded.iat,
+            "expiresAt": decoded.exp
         };
 
     }

@@ -1,6 +1,7 @@
 'use strict'
 const jwt = require('jsonwebtoken');
-const authConfig = require('../../infrastructure/config/auth.json')
+const authConfig = require('../../infrastructure/config/auth.json');
+const JwtUtil = require('../utils/jwtUtil');
 
 /**
  * @author Matheus Mol

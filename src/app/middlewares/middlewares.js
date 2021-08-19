@@ -9,16 +9,16 @@ const logger = require('../../infrastructure/logger/logger');
  * @author Matheus Mol
 */
 
-morganBody(app, {
-    stream: logger.stream,
-    maxBodyLength: 250,
-    logReqDateTime: false,
-    logReqUserAgent: false,
-    logIP: false,
-    logAllReqHeader:  true,
-    filterParameters: ['senha', 'PASSWORD'],
-    noColors: true,
-  });
+// morganBody(app, {
+//     stream: logger.stream,
+//     maxBodyLength: 250,
+//     logReqDateTime: false,
+//     logReqUserAgent: false,
+//     logIP: false,
+//     logAllReqHeader:  true,
+//     filterParameters: ['senha', 'PASSWORD'],
+//     noColors: true,
+//   });
 
 
 app.use(cors())
@@ -34,6 +34,6 @@ app.use(cors({
 require('./swagger')(app);
 
 //use all controllers
- require('../routes/index')(app);
+ require('../routes')(app);
 
 module.exports = app;
