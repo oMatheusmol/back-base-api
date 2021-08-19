@@ -1,1 +1,0 @@
-DELETE FROM Product WHERE id = @id;
