@@ -8,33 +8,31 @@ const authSecurity = require('./auth');
 
 /**
  * @author Matheus Mol
-*/
+ */
 
-module.exports = (app) => {
+module.exports = app => {
+	//the Swagger document yaml
+	const apiSpec = path.join(__dirname, '../docs/openapi.yaml');
+	// require it, build it programmatically, fetch it from a URL, ...)
+	const setup = swaggerUI.setup(jsyaml.load(fs.readFileSync(apiSpec, 'utf-8')));
 
-    //the Swagger document yaml
-    const apiSpec = path.join(__dirname, '../docs/openapi.yaml');
-    // require it, build it programmatically, fetch it from a URL, ...)
-    const setup = swaggerUI.setup(jsyaml.load(fs.readFileSync(apiSpec, 'utf-8')));
+	//Route Swagger Docs 3.0
+	app.use('/docs', swaggerUI.serve, setup);
 
-    //Route Swagger Docs 3.0
-    app.use('/docs', swaggerUI.serve, setup);
+	// Validate Swagger requests
+	app.use(
+		openApiValidator.middleware({
+			apiSpec: apiSpec,
+			validateRequests: true,
+			validateResponses: false,
+			validateSecurity: {
+				handlers: {
+					ApiKeyAuth: authSecurity.verifyApiKey,
+				},
+			},
+		}),
+	);
 
-    // Validate Swagger requests
-    app.use(
-        openApiValidator.middleware({
-            apiSpec: apiSpec,
-            validateRequests: true,
-            validateResponses: false,
-            validateSecurity: {
-                handlers: {
-                    ApiKeyAuth: authSecurity.verifyApiKey
-                }
-            }
-        })
-        
-    );
-
-    //validate swagger error
-    app.use(swaggerErrorValidator);
-} 
+	//validate swagger error
+	app.use(swaggerErrorValidator);
+};

@@ -3,10 +3,10 @@ const Exception = require('./exception');
 
 /**
  * @author Matheus Mol
-*/
+ */
 
 module.exports = class NotFoundException extends Exception {
-    constructor(message) {
-        super(message, HttpStatusCode.NOT_FOUND);
-    }
-}
+	constructor(message) {
+		super(message, HttpStatusCode.NOT_FOUND);
+	}
+};

@@ -1,3 +1,4 @@
+const HttpStatusCode = require('../helpers/httpStatusCode');
 const Exception = require('./exception');
 
 /**
@@ -6,6 +7,6 @@ const Exception = require('./exception');
 
 module.exports = class UnprocessableEntityException extends Exception {
     constructor(message) {
-        super(message, httpStatus.UNPROCESSABLE_ENTITY);
+        super(message, HttpStatusCode.UNPROCESSABLE_ENTITY);
     }
 }

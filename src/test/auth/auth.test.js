@@ -1,9 +1,9 @@
 const common = require('../index');
-const HttpStatusCode = require('../../app/helpers/httpStatusCode'); 
+const HttpStatusCode = require('../../app/helpers/httpStatusCode');
 
 /**
  * @author Matheus Mol
-*/
+ */
 
 // describe('POST Auth', () => {
 
@@ -34,6 +34,5 @@ const HttpStatusCode = require('../../app/helpers/httpStatusCode');
 //         const status = HttpStatusCode.BAD_REQUEST;
 //         res.should.have.status(status);
 //     });
-
 
 // });

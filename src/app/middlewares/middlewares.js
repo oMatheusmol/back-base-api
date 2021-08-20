@@ -1,13 +1,14 @@
+// eslint-disable-next-line no-unused-vars
+const helmet = require('helmet');
 const express = require('express');
 const app = express();
-const helmet = require('helmet');
-const cors = require('cors')
+const cors = require('cors');
 const morganBody = require('morgan-body');
 const logger = require('../../infrastructure/logger/logger');
 
 /**
  * @author Matheus Mol
-*/
+ */
 
 // morganBody(app, {
 //     stream: logger.stream,
@@ -20,20 +21,22 @@ const logger = require('../../infrastructure/logger/logger');
 //     noColors: true,
 //   });
 
+app.use(cors());
 
-app.use(cors())
 //only https
-// app.use(helmet()); 
+// app.use(helmet());
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.json({ limit: '50mb' }));
-app.use(cors({
-    exposedHeaders: ['X-Total-Count', 'X-Total-Page', 'X-Page']
-}))
+app.use(
+	cors({
+		exposedHeaders: ['X-Total-Count', 'X-Total-Page', 'X-Page'],
+	}),
+);
 
 // Swagger
 require('./swagger')(app);
 
 //use all controllers
- require('../routes')(app);
+require('../routes')(app);
 
 module.exports = app;

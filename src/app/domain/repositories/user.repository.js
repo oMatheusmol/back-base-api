@@ -1,71 +1,51 @@
 'use strict';
 
-const _ = require('lodash');
-const { find } = require('lodash');
-const arrayUtil = require('../../utils/arrayUtil');
 const BaseRepository = require('./base.repository');
 const database = require('../../../infrastructure/database/mongoFactory');
 
 /**
  * @author Matheus Mol
-*/
+ */
 
-module.exports = class UserRepository extends BaseRepository{
+module.exports = class UserRepository extends BaseRepository {
+	constructor() {
+		super();
+	}
 
-  constructor() {
-    super();
-  }
-  
-  async postModelUser (body) { 
-    try {
-      const collectionName = 'ModelUser';
-      const product = body;
-      await database.getCollection(collectionName).insertOne(product);
-      return true;
-            
-    } catch (error){
-      return false;
-    }
-  } 
+	async postModelUser(body) {
+		try {
+			const collectionName = 'ModelUser';
+			const product = body;
+			await database.getCollection(collectionName).insertOne(product);
+			return true;
+		} catch (error) {
+			return false;
+		}
+	}
 
-  async postNormalUser (body) { 
-    try {
-      const collectionName = 'NormalUser';
-      const product = body;
-      await database.getCollection(collectionName).insertOne(product);
-      return true;
-            
-    } catch (error){
-      return false;
-    }
-  } 
-  
+	async postNormalUser(body) {
+		try {
+			const collectionName = 'NormalUser';
+			const product = body;
+			await database.getCollection(collectionName).insertOne(product);
+			return true;
+		} catch (error) {
+			return false;
+		}
+	}
 
-  async get(params) {
+	async get(params) {
+		try {
+		} catch (err) {}
+	}
 
-    try {
+	async put(body) {
+		try {
+		} catch (err) {}
+	}
 
-    } catch (err) {
-
-    }
-  }
-
-  async put(body) {
-
-    try {
-
-    } catch (err) {
-
-    }
-  }
-
-  async delete(body) {
-
-    try {
-
-    } catch (err) {
-
-    }
-  }
-
-}
+	async delete(body) {
+		try {
+		} catch (err) {}
+	}
+};

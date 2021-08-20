@@ -9,196 +9,197 @@ let memCache = new cache.Cache();
 
 /**
  * @author Matheus Mol
-*/
+ */
 
 /**
  * Request service HTTP route
  */
 module.exports = class BaseController {
+	constructor(service) {
+		//initialize service object
+		this._service = service;
+	}
 
-    constructor(service) {
-        //initialize service object
-        this._service = service;
-    }
+	/**
+	 * Envia um resposta sucesso
+	 *
+	 * @param {Response} res
+	 * @param {Result} result
+	 */
+	async sendSuccess(res, result) {
+		try {
+			responseHelper.response(res, result, HttpStatusCode.OK);
+		} catch (err) {
+			responseHelper.error(res, err);
+		}
+	}
 
-    /**
-     * Envia um resposta sucesso
-     * 
-     * @param {Response} res 
-     * @param {Result} result 
-     */
-    async sendSuccess(res, result) {
-        try {
-            responseHelper.response(res, result, HttpStatusCode.OK);
-        } catch (err) {
-            responseHelper.error(res, err);
-        }
-    }
+	/**
+	 * Envia um resposta erro
+	 *
+	 * @param {Response} res
+	 * @param {Result} result
+	 */
+	async sendError(res, result) {
+		try {
+			responseHelper.response(res, result, HttpStatusCode.BAD_REQUEST);
+		} catch (err) {
+			responseHelper.error(res, err);
+		}
+	}
 
-    /**
-     * Envia um resposta erro
-     * 
-     * @param {Response} res 
-     * @param {Result} result 
-     */
-    async sendError(res,  result) {
-        try {
-            responseHelper.response(res, result, HttpStatusCode.BAD_REQUEST);
-        } catch (err) {
-            responseHelper.error(res, err);
-        }
-    }
+	/**
+	 * Envia um requisição get
+	 *
+	 * Aceita cache em memória
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 * @param {Array} result
+	 */
+	async get(req, res) {
+		let cacheContent = null;
+		const cacheRequest = req.cache;
 
-    /**
-     * Envia um requisição get 
-     * 
-     * Aceita cache em memória
-     * 
-     * @param {Request} req 
-     * @param {Response} res 
-     * @param {Array} result 
-     */
-    async get(req, res) {
+		if (cacheRequest) {
+			//verifica se recuperou o cache
+			cacheContent = memCache.get(cacheRequest.key);
+		}
 
-        let cacheContent = null;
-        const cacheRequest = req.cache;
+		try {
+			let params = req.query;
+			if (cacheContent != null) {
+				//send cache
+				responseHelper.response(res, cacheContent, HttpStatusCode.OK);
+			} else {
+				let results = await this._service.get(params);
 
-        if (cacheRequest) {
-            //verifica se recuperou o cache
-            cacheContent = memCache.get(cacheRequest.key);
-        }
+				//exists solicitacao de cache
+				if (cacheRequest) {
+					//save request in cache
+					memCache.put(
+						cacheRequest.key,
+						{ results },
+						cacheRequest.duration * 1000,
+					);
+				}
 
-        try {
+				responseHelper.response(res, { results }, HttpStatusCode.OK);
+			}
+		} catch (err) {
+			responseHelper.error(res, err);
+		}
+	}
 
-            let params = req.query;
-            if (cacheContent != null) {
-                //send cache
-                responseHelper.response(res, cacheContent, HttpStatusCode.OK);
-            } else {
+	/**
+	 * Envia uma requisição get
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	async getById(req, res) {
+		try {
+			const id = isNaN(req.params.id) ? req.params.id : parseInt(req.params.id);
+			let result = await this._service.getById(id);
+			responseHelper.response(res, result, HttpStatusCode.OK);
+		} catch (err) {
+			responseHelper.error(res, err);
+		}
+	}
 
-                let results = await this._service.get(params);
+	/**
+	 * Envia uma requisição save
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	async post(res, result) {
+		try {
+			responseHelper.response(res, result, HttpStatusCode.CREATED);
+		} catch (err) {
+			responseHelper.error(res, err);
+		}
+	}
 
-                //exists solicitacao de cache
-                if (cacheRequest) {
-                    //save request in cache
-                    memCache.put(cacheRequest.key, { results }, cacheRequest.duration * 1000);
-                }
+	/**
+	 * Envia uma requisição update
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	async put(req, res) {
+		try {
+			let id = req.query.id.value;
+			let body = req.body;
+			let result = await this._service.put(id, body);
+			responseHelper.response(res, result, HttpStatusCode.OK);
+		} catch (err) {
+			responseHelper.error(res, err);
+		}
+	}
 
-                responseHelper.response(res, { results }, HttpStatusCode.OK);
-            }
+	/**
+	 * Envia uma requisição update
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	async patch(req, res) {
+		try {
+			let id = req.query.id.value;
+			let body = req.body;
+			let result = await this._service.patch(id, body);
+			responseHelper.response(res, result, HttpStatusCode.OK);
+		} catch (err) {
+			if (err) {
+				responseHelper.responseAPI.error(
+					res,
+					HttpStatusCode.UNPROCESSABLE_ENTITY,
+					err.message,
+					true,
+				);
+			} else {
+				responseHelper.responseAPI.error(
+					res,
+					HttpStatusCode.INTERNAL_SERVER_ERROR,
+					err.message,
+				);
+			}
+		}
+	}
 
-        } catch (err) {
-            responseHelper.error(res, err);
-        }
-    }
+	/**
+	 * Envia uma requisição delete
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	async deleteById(req, res) {
+		try {
+			let id = req.query.id.value;
+			let result = await this._service.deleteById(id);
+			responseHelper.response(res, result, HttpStatusCode.OK);
+		} catch (err) {
+			responseHelper.error(res, err);
+		}
+	}
 
-    /**
-     * Envia uma requisição get
-     * 
-     * @param {Request} req 
-     * @param {Response} res 
-     */
-    async getById(req, res) {
-        try {
-            const id = isNaN(req.params.id)
-                ? req.params.id
-                : parseInt(req.params.id);
-            let result = await this._service.getById(id);
-            responseHelper.response(res, result, HttpStatusCode.OK);
-        }
-        catch (err) {
-            responseHelper.error(res, err);
-        }
-    }
+	/**
+	 * Recupera o valor do parametro id na request
+	 * @param {Request} req
+	 */
+	getParamId(req) {
+		return req.query.id.value;
+	}
 
-    /**
-     * Envia uma requisição save
-     * 
-     * @param {Request} req 
-     * @param {Response} res 
-     */
-     async post(res, result) {
-        try {
-            responseHelper.response(res, result, HttpStatusCode.CREATED);
-        } catch (err) {
-            responseHelper.error(res, err);
-        }
-    }
+	/**
+	 * Validate parameter
+	 */
+	toParamValue(o, defaultValue) {
+		return paramValidator.toParamValue(o, defaultValue);
+	}
 
-
-    /**
-     * Envia uma requisição update
-     * 
-     * @param {Request} req 
-     * @param {Response} res 
-     */
-    async put(req, res) {
-        try {
-            let id = req.query.id.value;
-            let body = req.body;
-            let result = await this._service.put(id, body);
-            responseHelper.response(res, result, HttpStatusCode.OK);
-        }
-        catch (err) {
-            responseHelper.error(res, err);
-        }
-    }
-
-    /**
-     * Envia uma requisição update
-     * 
-     * @param {Request} req 
-     * @param {Response} res 
-     */
-    async patch(req, res) {
-        try {
-            let id = req.query.id.value;
-            let body = req.body;
-            let result = await this._service.patch(id, body);
-            responseHelper.response(res, result, HttpStatusCode.OK);
-        }
-        catch (err) {
-            if (err instanceof ErroException) {
-                responseHelper.responseAPI.error(res, HttpStatusCode.UNPROCESSABLE_ENTITY, err.message, true);
-            } else {
-                responseHelper.responseAPI.error(res, HttpStatusCode.INTERNAL_SERVER_ERROR, err.message);
-            }
-        }
-    }
-
-    /**
-     * Envia uma requisição delete
-     * 
-     * @param {Request} req 
-     * @param {Response} res 
-     */
-    async deleteById(req, res) {
-        try {
-            let id = req.query.id.value;
-            let result = await this._service.deleteById(id);
-            responseHelper.response(res, result, HttpStatusCode.OK);
-        }
-        catch (err) {
-            responseHelper.error(res, err);
-        }
-    }
-
-    /**
-     * Recupera o valor do parametro id na request
-     * @param {Request} req 
-     */
-    getParamId(req) {
-        return req.query.id.value;
-    }
-
-    /**
-     * Validate parameter
-     */
-    toParamValue(o, defaultValue) {
-        return paramValidator.toParamValue(o, defaultValue);
-    }
-
-    toParams(req) {
-        return SwaggerHelper.params(req);
-    }
-}
+	toParams(req) {
+		return SwaggerHelper.params(req);
+	}
+};
