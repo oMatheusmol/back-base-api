@@ -1,7 +1,6 @@
 'use strict';
 
 const fs = require('fs');
-const ErroException = require('../../api/exceptions/http.error.exception');
 
 /**
  * @author Matheus Mol
@@ -15,7 +14,7 @@ exports.createFolder = async function (path) {
 	try {
 		fs.mkdirSync(path);
 	} catch (err) {
-		throw new ErroException(`Criar diretório no servidor: ${err.message}`);
+		throw new `Criar diretório no servidor: ${err.message}`();
 	}
 };
 
@@ -23,7 +22,7 @@ exports.createFile = async function (path, data) {
 	try {
 		return fs.writeFileSync(path, data);
 	} catch (err) {
-		throw new ErroException(`Criando arquivo no servidor: ${err.message}`);
+		throw new `Criando arquivo no servidor: ${err.message}`();
 	}
 };
 
@@ -31,7 +30,7 @@ exports.deleteFile = async function (path) {
 	try {
 		return fs.unlinkSync(path);
 	} catch (err) {
-		throw new ErroException(`Removendo arquivo no servidor: ${err.message}`);
+		throw new `Removendo arquivo no servidor: ${err.message}`();
 	}
 };
 
