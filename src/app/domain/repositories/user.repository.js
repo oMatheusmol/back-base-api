@@ -16,17 +16,18 @@ module.exports = class UserRepository extends BaseRepository {
 	async post(body) {
 		try {
 			const isValid = await this.valid(body);
-
 			if (isValid.error) return { error: isValid.error };
 
-			body.following = [];
 			if (body.isPrime) {
-				body.followers = [];
 				body.pictures = [];
+				body.followers = [];
 			}
+			body.following = [];
 			body.createdAt = new Date();
 			body.updatedAt = new Date();
+
 			await database.getCollection(this.collectionName).insertOne(body);
+
 			return true;
 		} catch (error) {
 			return { error: error };
@@ -52,25 +53,43 @@ module.exports = class UserRepository extends BaseRepository {
 				.getCollection(this.collectionName)
 				.find({ email: params.email })
 				.toArray();
+
 			return email;
-		} catch (err) {
-			return err;
+		} catch (error) {
+			return { error: error };
 		}
 	}
 
-	async put(body) {
+	async put(req) {
 		try {
-		} catch (err) {}
+			const user = await this.get(req.params);
+			if (user.error) return { error: 'User not found!' };
+			const username = user[0].username;
+
+			await database.getCollection(this.collectionName).updateOne({ username: username }, [
+				{
+					$set: {
+						email: req.body.email,
+						profilePicture: req.body.profilePicture,
+						password: req.body.password,
+						updatedAt: new Date(),
+					},
+				},
+			]);
+		} catch (error) {
+			return { error: error };
+		}
 	}
 
-	async delete(body) {
-		try {
-		} catch (err) {}
-	}
+	// async delete(body) {
+	// 	try {
+	// 	} catch (err) {}
+	// }
 
 	async valid(body) {
 		const username = await this.get(body);
 		const email = await this.getByEmail(body);
+
 		if (username.length > 0) return { error: 'Username is not valid!' };
 		if (email.length > 0) return { error: 'Email is not valid!' };
 		return true;

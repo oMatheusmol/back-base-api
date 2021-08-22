@@ -37,7 +37,7 @@ class UserController extends BaseController {
 
 	async put(req, res) {
 		try {
-			const putted = await repository.put(req.body);
+			const putted = await repository.put(req);
 
 			if (putted === 'Error' || null)
 				return res.status(401).send({ message: 'Change failed!' });

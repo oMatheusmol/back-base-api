@@ -7,5 +7,7 @@ const controller = require('../controllers/user.controller');
 
 router.post('/', controller.post);
 router.get('/:username', controller.get);
+router.put('/:username', controller.put);
+
 
 module.exports = app => app.use('/api/v1/users', router);
