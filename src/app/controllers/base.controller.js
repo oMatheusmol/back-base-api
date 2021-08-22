@@ -77,11 +77,7 @@ module.exports = class BaseController {
 				//exists solicitacao de cache
 				if (cacheRequest) {
 					//save request in cache
-					memCache.put(
-						cacheRequest.key,
-						{ results },
-						cacheRequest.duration * 1000,
-					);
+					memCache.put(cacheRequest.key, { results }, cacheRequest.duration * 1000);
 				}
 
 				responseHelper.response(res, { results }, HttpStatusCode.OK);
@@ -159,11 +155,7 @@ module.exports = class BaseController {
 					true,
 				);
 			} else {
-				responseHelper.responseAPI.error(
-					res,
-					HttpStatusCode.INTERNAL_SERVER_ERROR,
-					err.message,
-				);
+				responseHelper.responseAPI.error(res, HttpStatusCode.INTERNAL_SERVER_ERROR, err.message);
 			}
 		}
 	}

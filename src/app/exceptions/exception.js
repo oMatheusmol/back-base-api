@@ -15,11 +15,7 @@ module.exports = class Exception extends Error {
 			errorMsg = err;
 		} else if (err.message) {
 			errorMsg = err.message;
-		} else if (
-			err.response &&
-			err.response.data &&
-			err.response.data.message === 'object'
-		) {
+		} else if (err.response && err.response.data && err.response.data.message === 'object') {
 			errorMsg = JSON.stringify(err.response.data.message);
 		} else if (err.isAxiosError && err.response) {
 			errorMsg =

@@ -93,9 +93,7 @@ module.exports = class Parameter {
 	}
 
 	toUrl() {
-		return `${this.endpoint}${
-			_.isNil(this.queryParams) ? '' : this.queryParams
-		}`;
+		return `${this.endpoint}${_.isNil(this.queryParams) ? '' : this.queryParams}`;
 	}
 
 	parseMapToJson(map) {

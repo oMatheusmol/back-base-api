@@ -12,9 +12,7 @@ module.exports = {
 			if (_.isNil(date)) {
 				return null;
 			}
-			return new Date(
-				date.valueOf() + date.getTimezoneOffset() * 60000,
-			).getTime();
+			return new Date(date.valueOf() + date.getTimezoneOffset() * 60000).getTime();
 		} catch (err) {
 			return null;
 		}

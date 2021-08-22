@@ -13,9 +13,7 @@ const logger = require('./src/infrastructure/logger/logger');
 const database = 'MySecretModel';
 const port = process.env.PORT || 7000;
 const server = app.listen(port, () => {
-	logger.info(
-		`API running on Port ${port} | Enviroment: ${'Development'} | Database: ${database}`,
-	);
+	logger.info(`API running on Port ${port} | Enviroment: ${'Development'} | Database: ${database}`);
 });
 config.connect(`mongodb://127.0.0.1:27017/${database}-api`, () => server);
 module.exports = server;

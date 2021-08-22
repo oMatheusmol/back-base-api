@@ -12,18 +12,13 @@ module.exports = class JwtUtil {
 		return new Promise(function (resolve, reject) {
 			//validade de 1 dia
 			// data.expiresIn = 86400;
-			jwt.sign(
-				{ data },
-				cert.secret,
-				{ expiresIn: exp || '1d' },
-				function (err, token) {
-					if (err) {
-						reject(err);
-					} else {
-						resolve(token);
-					}
-				},
-			);
+			jwt.sign({ data }, cert.secret, { expiresIn: exp || '1d' }, function (err, token) {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(token);
+				}
+			});
 		});
 	}
 

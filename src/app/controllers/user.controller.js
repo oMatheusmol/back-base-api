@@ -28,7 +28,7 @@ class UserController extends BaseController {
 			const got = await repository.get(req.params);
 
 			if (got.error) return super.sendError(res, { message: 'Search failed!' });
-      if(got.length < 1) return super.post(res, { message: 'User not found!' });
+			if (got.length < 1) return super.post(res, { message: 'User not found!' });
 			super.post(res, got);
 		} catch (err) {
 			super.sendError(res, err);
@@ -39,8 +39,7 @@ class UserController extends BaseController {
 		try {
 			const putted = await repository.put(req);
 
-			if (putted === 'Error' || null)
-				return res.status(401).send({ message: 'Change failed!' });
+			if (putted === 'Error' || null) return res.status(401).send({ message: 'Change failed!' });
 
 			super.post(res, { message: 'Successfully changed!' });
 		} catch (err) {

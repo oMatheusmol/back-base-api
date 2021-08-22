@@ -12,10 +12,7 @@ const logger = createLogger({
 		format.simple(),
 		format.timestamp(),
 		format.printf(
-			info =>
-				`[${new Date(info.timestamp).toLocaleString()}] ${info.level} ${
-					info.message
-				}`,
+			info => `[${new Date(info.timestamp).toLocaleString()}] ${info.level} ${info.message}`,
 		),
 	),
 	transports: [

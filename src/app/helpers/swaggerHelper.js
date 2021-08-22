@@ -22,9 +22,7 @@ module.exports = {
 		if (req && req.query) {
 			const params_validator = _validateData(req.query, params_name);
 			if (params_validator.length > 0) {
-				throw new BadRequestException(
-					`Parâmetro(s) '${params_validator}' obrigatório(s)`,
-				);
+				throw new BadRequestException(`Parâmetro(s) '${params_validator}' obrigatório(s)`);
 			}
 		} else {
 			return null;
@@ -34,9 +32,7 @@ module.exports = {
 		if (req && req.body) {
 			const params_validator = _validateData(req.body, params_name);
 			if (params_validator.length > 0) {
-				throw new BadRequestException(
-					`Payload '${params_validator}' obrigatório(s)`,
-				);
+				throw new BadRequestException(`Payload '${params_validator}' obrigatório(s)`);
 			}
 		} else {
 			return null;
