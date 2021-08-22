@@ -17,7 +17,7 @@ class UserController extends BaseController {
 
 			if (posted.error) return super.sendError(res, { message: posted.error });
 
-			super.post(res, { message: 'Salvo com sucesso' });
+			super.post(res, { message: 'Saved successfully!' });
 		} catch (err) {
 			super.sendError(res, err);
 		}
@@ -27,7 +27,7 @@ class UserController extends BaseController {
 		try {
 			const got = await repository.get(req.params);
 
-			if (got.error) return super.sendError(res, { message: 'Falha na busca' });
+			if (got.error) return super.sendError(res, { message: 'Search failed!' });
       if(got.length < 1) return super.post(res, { message: 'User not found!' });
 			super.post(res, got);
 		} catch (err) {
@@ -40,9 +40,9 @@ class UserController extends BaseController {
 			const putted = await repository.put(req.body);
 
 			if (putted === 'Error' || null)
-				return res.status(401).send({ message: 'Falha na alteracao' });
+				return res.status(401).send({ message: 'Change failed!' });
 
-			super.post(res, { message: 'Alterado com sucesso' });
+			super.post(res, { message: 'Successfully changed!' });
 		} catch (err) {
 			super.sendError(res, err);
 		}
@@ -52,9 +52,9 @@ class UserController extends BaseController {
 		try {
 			const deleted = await repository.delete(req.body);
 
-			if (deleted === 'Error' || null) return res.status(401).send({ message: 'Falha ao deletar' });
+			if (deleted === 'Error' || null) return res.status(401).send({ message: 'Failed to delete' });
 
-			super.post(res, { message: 'Deletado com sucesso' });
+			super.post(res, { message: 'Successfully deleted!' });
 		} catch (err) {
 			super.sendError(res, err);
 		}

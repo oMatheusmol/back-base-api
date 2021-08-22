@@ -71,8 +71,8 @@ module.exports = class UserRepository extends BaseRepository {
 	async valid(body) {
 		const username = await this.get(body);
 		const email = await this.getByEmail(body);
-		if (username.length > 0) return { error: 'Username not valid!' };
-		if (email.length > 0) return { error: 'Email not valid!' };
+		if (username.length > 0) return { error: 'Username is not valid!' };
+		if (email.length > 0) return { error: 'Email is not valid!' };
 		return true;
 	}
 };
