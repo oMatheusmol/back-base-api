@@ -26,9 +26,9 @@ class AuthController extends BaseController {
 		}
 	}
 
-	static async refreshToken(req, res) {
+	async refreshToken(req, res) {
 		try {
-			const token = await repository.getRefreshToken(req);
+			const token = await repository._generateTokenJWT(req);
 
 			res.send(token);
 		} catch (err) {

@@ -37,13 +37,13 @@
 		"lodash": "^4.17.21",
 		"memory-cache": "^0.2.0",
 		"moment": "^2.29.1",
+		"mongodb": "^3.6.6",
 		"morgan-body": "^2.6.6",
 		"mssql": "^6.3.2",
 		"path": "^0.12.7",
 		"swagger-ui-express": "^4.1.6",
 		"tracer": "^1.1.4",
-		"winston": "^3.3.3",
-		"mongodb": "^3.6.6"
+		"winston": "^3.3.3"
 	},
 	"devDependencies": {
 		"@types/chai-http": "^4.2.0",

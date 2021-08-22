@@ -17,13 +17,9 @@ module.exports = class AuthRepository extends BaseRepository {
 			const collectionName = 'accessUser';
 			const user = params;
 			await database.getCollection(collectionName).insertOne(user);
-
 			if (this.isResultEmpty([user])) {
-				throw new exceptions.AutheticationException(
-					'Email ou Senha inválido(s)',
-				);
+				throw new exceptions.AutheticationException('Email ou Senha inválido(s)');
 			}
-
 			const token = await this._generateTokenJWT(user);
 			return token;
 		} catch (error) {

@@ -11,22 +11,9 @@ class UserController extends BaseController {
 		super();
 	}
 
-	async postModelUser(req, res) {
+	async post(req, res) {
 		try {
-			const posted = await repository.postModelUser(req.body);
-
-			if (!posted)
-				return res.status(401).send({ message: 'Falha no cadastro' });
-
-			super.post(res, { message: 'Salvo com sucesso' });
-		} catch (err) {
-			super.sendError(res, err);
-		}
-	}
-
-	async postNormalUser(req, res) {
-		try {
-			const posted = await repository.postNormalUser(req.body);
+			const posted = await repository.post(req.body);
 
 			if (!posted)
 				return res.status(401).send({ message: 'Falha no cadastro' });
@@ -39,7 +26,7 @@ class UserController extends BaseController {
 
 	async get(req, res) {
 		try {
-			const got = await repository.get(req.params.productName);
+			const got = await repository.get(req.params);
 
 			if (got === 'Error' || null)
 				return res.status(401).send({ message: 'Falha na busca' });

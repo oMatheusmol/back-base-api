@@ -10,24 +10,20 @@ const database = require('../../../infrastructure/database/mongoFactory');
 module.exports = class UserRepository extends BaseRepository {
 	constructor() {
 		super();
+		this.collectionName = 'users';
 	}
 
-	async postModelUser(body) {
+	async post(body) {
 		try {
-			const collectionName = 'ModelUser';
-			const product = body;
-			await database.getCollection(collectionName).insertOne(product);
-			return true;
-		} catch (error) {
-			return false;
-		}
-	}
-
-	async postNormalUser(body) {
-		try {
-			const collectionName = 'NormalUser';
-			const product = body;
-			await database.getCollection(collectionName).insertOne(product);
+			const user = body;
+			user.following = [];
+			if (user.isPrime) {
+				user.followers = [];
+				user.pictures = [];
+			}
+			user.createdAt = new Date();
+			user.updatedAt = new Date();
+			await database.getCollection(this.collectionName).insertOne(user);
 			return true;
 		} catch (error) {
 			return false;
@@ -36,11 +32,16 @@ module.exports = class UserRepository extends BaseRepository {
 
 	async get(params) {
 		try {
-		} catch (err) {}
+			const users = await database.getCollection(this.collectionName).find({username: params.username}).toArray();
+			return users
+		} catch (err) {
+			return err
+		}
 	}
 
 	async put(body) {
 		try {
+
 		} catch (err) {}
 	}
 

@@ -60,15 +60,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/errorResponse'
+  /auth/refresh-token:
+    get:
+      tags:
+        - Auth
+      summary: Obtem um token
+      operationId: refreshToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: UNAUTHORIZED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: INTERNAL_SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
 
   # Routes #
 
-  /user/modelUser:
+  /users:
     post:
       tags:
         - User
-      summary: Cadastra modelUser
-      operationId: post modelUser
+      summary: Cadastra Users
+      operationId: post Users
       security:
         - ApiKeyAuth: []
       requestBody:
@@ -77,6 +113,16 @@ paths:
             schema:
               type: object
               properties:
+                profilePicture:
+                  type: string
+                followers:
+                  type: array
+                following:
+                  type: array
+                isPrime:
+                  type: boolean
+                username:
+                  type: string
                 email:
                   type: string
                   format: email
@@ -84,11 +130,11 @@ paths:
                   type: string
       responses:
         201:
-          description: POST modelUser
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/modelUser'
+                $ref: '#/components/schemas/users'
         401:
           description: UNAUTHORIZED
           content:
@@ -101,44 +147,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/errorResponse'
-  /user/normalUser:
-    post:
+  /users/{username}:
+    get:
       tags:
-        - User
-      summary: Cadastra normalUser
-      operationId: post normalUser
-      security:
-        - ApiKeyAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
+        - Users
+      summary: Recupera dados do usuario
+      operationId: get user data
+      # security:
+        # - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+            description: Username
       responses:
-        201:
-          description: POST normalUser
+        200:
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/normalUser'
+                type: object
         401:
           description: UNAUTHORIZED
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: "#/components/schemas/errorResponse"
         500:
           description: INTERNAL_SERVER_ERROR
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: "#/components/schemas/errorResponse"
   #   put:
   #     security:
   #       - BearerAuth: []
@@ -266,19 +308,8 @@ components:
       properties:
         data:
           type: object
-    normalUser:
+    users:
       type: object
       properties:
-        email:
-          format: email
-          type: string
-        password:
-          type: integer
-    modelUser:
-      type: object
-      properties:
-        email:
-          format: email
-          type: string
-        password:
-          type: integer
+        data:
+          type: object
