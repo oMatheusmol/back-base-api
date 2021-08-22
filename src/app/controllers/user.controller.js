@@ -15,8 +15,7 @@ class UserController extends BaseController {
 		try {
 			const posted = await repository.post(req.body);
 
-			if (!posted)
-				return res.status(401).send({ message: 'Falha no cadastro' });
+			if (posted.error) return super.sendError(res, { message: posted.error });
 
 			super.post(res, { message: 'Salvo com sucesso' });
 		} catch (err) {
@@ -28,9 +27,8 @@ class UserController extends BaseController {
 		try {
 			const got = await repository.get(req.params);
 
-			if (got === 'Error' || null)
-				return res.status(401).send({ message: 'Falha na busca' });
-
+			if (got.error) return super.sendError(res, { message: 'Falha na busca' });
+      if(got.length < 1) return super.post(res, { message: 'User not found!' });
 			super.post(res, got);
 		} catch (err) {
 			super.sendError(res, err);
@@ -54,8 +52,7 @@ class UserController extends BaseController {
 		try {
 			const deleted = await repository.delete(req.body);
 
-			if (deleted === 'Error' || null)
-				return res.status(401).send({ message: 'Falha ao deletar' });
+			if (deleted === 'Error' || null) return res.status(401).send({ message: 'Falha ao deletar' });
 
 			super.post(res, { message: 'Deletado com sucesso' });
 		} catch (err) {
